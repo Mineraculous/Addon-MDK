@@ -1,8 +1,18 @@
+// ==============================================================================
+// Addon-MDK Build Script
+// This Gradle build script is configured for developing a NeoForge addon for
+// Mineraculous using NeoForged's ModDevGradle (MDG).
+// ==============================================================================
+
 plugins {
 	id 'java-library'
 	id 'maven-publish'
 	id 'signing'
+	// Immaculate provides automated code formatting using Eclipse Formatter and Spotless.
+	// Run './gradlew immaculateApply' to automatically format your code!
+	id 'dev.lukebemish.immaculate' version '0.1.+'
 	id 'idea'
+	// ModDevGradle (MDG) is the official NeoForge Gradle plugin for mod development.
 	id 'net.neoforged.moddev' version "${mdg_version}"
 }
 
@@ -10,16 +20,22 @@ tasks.named('wrapper', Wrapper).configure {
 	distributionType = Wrapper.DistributionType.BIN
 }
 
+// Sets the base archive name for the compiled jar file (e.g., exampleaddon-1.21.1)
 base {
 	archivesName = "${mod_id}-${minecraft_version}"
 }
 
+// Configure Java toolchain and generate sources/javadoc jars when building
 java {
 	toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 	withSourcesJar()
 	withJavadocJar()
 }
 
+// ==============================================================================
+// Repositories
+// Declare where Gradle should look for dependencies (Mineraculous, TommyLib, etc.)
+// ==============================================================================
 repositories {
 	exclusiveContent {
 		forRepository {
@@ -122,14 +138,19 @@ repositories {
 	mavenLocal()
 }
 
+// ==============================================================================
+// NeoForge ModDevGradle Configuration
+// ==============================================================================
 neoForge {
 	version = "${neoforge_version}"
 
+	// Parchment mappings provide human-readable parameter names and javadocs
 	parchment {
 		minecraftVersion = parchment_minecraft_version
 		mappingsVersion = parchment_version
 	}
 
+	// Define run configurations for testing your mod in the IDE
 	runs {
 		configureEach {
 			systemProperties.put('terminal.ansi', 'true')
@@ -162,6 +183,7 @@ neoForge {
 			ideName = "Server"
 			gameDirectory = project.layout.projectDirectory.dir('runs/server')
 		}
+		// Data generation run config: generates assets and data into src/generated/resources/
 		data {
 			data()
 			ideName = "Data Generation"
@@ -171,7 +193,7 @@ neoForge {
 	}
 
 	mods {
-		exampleaddon {
+		"${mod_id}" {
 			sourceSet sourceSets.main
 		}
 	}
@@ -181,12 +203,37 @@ configurations {
 	runtimeClasspath.extendsFrom localRuntime
 }
 
+// ==============================================================================
+// Dependencies
+// ==============================================================================
 dependencies {
+	// TommyLib is required by Mineraculous. Using jarJar bundles it if needed.
 	jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
+	// Mineraculous API: provides core registries, capabilities, and base classes for addons.
 	api "dev.thomasglasser.mineraculous:mineraculous-${minecraft_version}:${mineraculous_version}"
+
+	// --- Optional & Integration Dependencies ---
+	// Curios is required if your addon registers custom Miraculouses or wearable jewelry.
+	implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+	// Uncomment below if you need advanced entity/AI behaviors via SmartBrainLib:
+	// implementation "net.tslat.smartbrainlib:smartbrainlib-neoforge-${minecraft_version}:${smartbrainlib_version}"
+
+	// Uncomment below if you want to create in-game guide books via Modonomicon:
+	// implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
+
+	// --- Development QoL Mods ---
+	// Jade is included as Mineraculous language/data providers reference Jade tooltip APIs:
+	implementation "maven.modrinth:jade:${jade_version}+neoforge"
+	// localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 }
 
+// ==============================================================================
+// Resource Processing & Mod Metadata Generation
+// Processes src/main/templates/ (e.g. neoforge.mods.toml) replacing ${variables}
+// with values from gradle.properties and build.gradle.
+// ==============================================================================
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
 	var replaceProperties = [
 			version: project.version,
@@ -204,6 +251,11 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 			icon: icon,
 			tommylib_version: tommylib_version,
 			mineraculous_version: mineraculous_version,
+			curios_version: curios_version,
+			smartbrainlib_version: smartbrainlib_version,
+			modonomicon_version: modonomicon_version,
+			jade_version: jade_version,
+			jei_version: jei_version,
 	]
 
 	inputs.properties replaceProperties
@@ -215,10 +267,71 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 tasks.processResources.dependsOn generateModMetadata
 
+// Include generated resources (from data generation) in the resource source directories
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-// Declare capabilities on the outgoing configurations.
-// Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
+// ==============================================================================
+// Code Formatting (Immaculate & Spotless)
+// Automatically formats Java code before compiling.
+// ==============================================================================
+compileJava.dependsOn immaculateApply
+compileJava.finalizedBy immaculateCheck
+
+immaculate {
+	workflows.register('java') {
+		java()
+		files.from rootProject.fileTree("src", {
+			include "**/*.java"
+		})
+		noTabs()
+		googleFixImports()
+		toggleOff = 'spotless:off'
+		toggleOn = 'spotless:on'
+		eclipse {
+			version '3.37.0'
+			config = rootProject.file('codeformat/formatter-config.xml')
+		}
+
+		// Disallow wildcard imports (e.g., import net.minecraft.world.item.*;)
+		custom 'noWildcardImports', { String fileContents ->
+			if (fileContents.contains('*;\n')) {
+				throw new GradleException('No wildcard imports are allowed! Please import classes explicitly.')
+			}
+		}
+
+		// Enforce using @Nullable instead of @NotNull or @Nonnull
+		custom 'noNotNull', { String fileContents ->
+			if (fileContents.contains('@NotNull') || fileContents.contains('@Nonnull')) {
+				throw new GradleException('@NotNull and @Nonnull are disallowed. Use @Nullable where appropriate.')
+			}
+		}
+
+		// Trim trailing whitespace from added lines
+		def trailingWhitespace = java.util.regex.Pattern.compile('^\\+.*[ \t]+\$', java.util.regex.Pattern.UNIX_LINES | java.util.regex.Pattern.MULTILINE)
+		custom 'trimTrailingWhitespace', { String fileContents ->
+			java.util.regex.Matcher matcher = trailingWhitespace.matcher(fileContents)
+			StringBuilder sb = new StringBuilder()
+			while (matcher.find()) {
+				matcher.appendReplacement(sb, matcher.group().trim())
+			}
+			matcher.appendTail(sb)
+			return sb.toString()
+		}
+
+		custom 'jetbrainsNullable', { String fileContents ->
+			fileContents.replace('javax.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+		}
+	}
+}
+
+javadoc {
+	failOnError = false
+}
+
+// ==============================================================================
+// Capability Declarations & Jar Manifest
+// Read more about capabilities: https://docs.gradle.org/current/userguide/component_capabilities.html
+// ==============================================================================
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
 	configurations."$variant".outgoing {
 		capability("$group:${base.archivesName.get()}:$version")
