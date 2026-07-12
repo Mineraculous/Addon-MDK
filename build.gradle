@@ -103,29 +103,35 @@ repositories {
 		}
 		filter { includeGroupAndSubgroups "de.maxhenkel.voicechat" }
 	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				name = 'Sherds API'
-				url = 'https://dl.cloudsmith.io/public/thomasglasser/sherdsapi/maven/'
-			}
-		}
-		filter { includeGroupAndSubgroups "dev.thomasglasser.sherdsapi" }
-	}
+	// ==============================================================================
+	// Thomas Glasser Maven Repositories (Releases & Betas)
+	// ==============================================================================
 	maven {
-		name = 'Mineraculous'
-		url = 'https://dl.cloudsmith.io/public/thomasglasser/mineraculous/maven/'
+		name = 'TommyLib, Sherds API, and Mineraculous'
+		url = 'https://maven.thomasglasser.dev/releases'
 		content {
+			includeGroupAndSubgroups("dev.thomasglasser.tommylib")
+			includeGroupAndSubgroups("dev.thomasglasser.sherdsapi")
 			includeGroupAndSubgroups("dev.thomasglasser.mineraculous")
 		}
 	}
-	maven {
-		name = 'TommyLib'
-		url = 'https://dl.cloudsmith.io/public/thomasglasser/tommylib/maven/'
-		content {
-			includeGroupAndSubgroups("dev.thomasglasser.tommylib")
-		}
-	}
+
+	// Uncomment the block below ONLY if you are an authorized beta tester!
+	// To authenticate, add 'MINERACULOUS_USERNAME' and 'MINERACULOUS_PASSWORD'
+	// to your local, user-level 'gradle.properties' file (NOT this project file).
+
+    maven {
+       name = 'Mineraculous Betas'
+       url = 'https://maven.thomasglasser.dev/betas'
+       credentials {
+          username = project.findProperty("MINERACULOUS_USERNAME") ?: System.getenv("MINERACULOUS_USERNAME")
+          password = project.findProperty("MINERACULOUS_PASSWORD") ?: System.getenv("MINERACULOUS_PASSWORD")
+       }
+       content {
+          includeGroupAndSubgroups("dev.thomasglasser.mineraculous")
+       }
+    }
+
 	maven {
 		name = 'NeoForge'
 		url = 'https://maven.neoforged.net/releases'
@@ -211,7 +217,15 @@ dependencies {
 	jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
 	// Mineraculous API: provides core registries, capabilities, and base classes for addons.
-	api "dev.thomasglasser.mineraculous:mineraculous-${minecraft_version}:${mineraculous_version}"
+	// ------------------------------------------------------------------------------
+	// PUBLIC STABLE RELEASES:
+	// api "dev.thomasglasser.mineraculous:mineraculous-${minecraft_version}:${mineraculous_version}"
+
+	// PRIVATE BETA RELEASES (Testers Only):
+	// Private beta builds are published under user-isolated group namespaces and include
+	// a personalized version suffix. If building against a beta, comment out the public
+	// line above and uncomment the line below
+	 api "dev.thomasglasser.mineraculous.${project.findProperty("MINERACULOUS_USERNAME") ?: System.getenv("MINERACULOUS_USERNAME")}:mineraculous-${minecraft_version}:${mineraculous_version}"
 
 	// --- Optional & Integration Dependencies ---
 	// Curios is required if your addon registers custom Miraculouses or wearable jewelry.
@@ -226,7 +240,7 @@ dependencies {
 	// --- Development QoL Mods ---
 	// Jade is included as Mineraculous language/data providers reference Jade tooltip APIs:
 	implementation "maven.modrinth:jade:${jade_version}+neoforge"
-	// localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+	localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 }
 
 // ==============================================================================
