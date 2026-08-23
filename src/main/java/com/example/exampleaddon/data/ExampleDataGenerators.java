@@ -8,6 +8,7 @@ import com.example.exampleaddon.data.models.ExampleItemModelProvider;
 import com.example.exampleaddon.world.kamikotization.ExampleKamikotizations;
 import com.example.exampleaddon.world.miraculous.ExampleMiraculouses;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
+import dev.thomasglasser.mineraculous.api.world.ability.Abilities;
 import dev.thomasglasser.tommylib.api.data.DataGenerationUtils;
 import net.minecraft.core.RegistrySetBuilder;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -24,6 +25,7 @@ public class ExampleDataGenerators {
      * datapack JSON files for them.
      */
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+            .add(MineraculousRegistries.ABILITY, Abilities::bootstrap)
             .add(MineraculousRegistries.MIRACULOUS, ExampleMiraculouses::bootstrap)
             .add(MineraculousRegistries.KAMIKOTIZATION, ExampleKamikotizations::bootstrap);
 

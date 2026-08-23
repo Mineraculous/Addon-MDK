@@ -7,10 +7,13 @@ import dev.thomasglasser.mineraculous.api.core.customization.setting.Customizati
 import dev.thomasglasser.mineraculous.api.core.customization.setting.CustomizationSettings;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
 import dev.thomasglasser.mineraculous.api.sounds.MineraculousSoundEvents;
+import dev.thomasglasser.mineraculous.api.world.ability.Abilities;
+import dev.thomasglasser.mineraculous.api.world.ability.Ability;
+import dev.thomasglasser.mineraculous.api.world.ability.AbilityInstance;
 import dev.thomasglasser.mineraculous.api.world.miraculous.Miraculous;
 import dev.thomasglasser.mineraculous.impl.data.curios.MineraculousCuriosProvider;
-import dev.thomasglasser.mineraculous.impl.world.ability.BuiltInAbilities;
 import java.util.Optional;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
@@ -36,6 +39,8 @@ public class ExampleMiraculouses {
      * @param context The bootstrap context provided by data generation.
      */
     public static void bootstrap(BootstrapContext<Miraculous> context) {
+        HolderGetter<Ability> abilities = context.lookup(MineraculousRegistries.ABILITY);
+
         context.register(
                 EXAMPLE,
                 new Miraculous(
@@ -53,10 +58,10 @@ public class ExampleMiraculouses {
                                 .add(CustomizationSettingKeys.TRANSFORM_SOUND, MineraculousSoundEvents.BUTTERFLY_TRANSFORM)
                                 .build(),
                         // 6. Active Superpower Ability: The main ability triggered by the hero (e.g., Kamikotization, Cataclysm)
-                        BuiltInAbilities.KAMIKOTIZATION,
+                        AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKOTIZATION)),
                         // 7. Passive Abilities: Constant buffs or powers active while transformed
                         ImmutableList.of(
-                                BuiltInAbilities.KAMIKO_CONTROL,
-                                BuiltInAbilities.KAMIKOTIZED_COMMUNICATION)));
+                                AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKO_CONTROL)),
+                                AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKOTIZED_COMMUNICATION)))));
     }
 }
