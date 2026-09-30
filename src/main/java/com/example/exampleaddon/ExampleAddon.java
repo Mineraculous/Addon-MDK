@@ -3,7 +3,6 @@ package com.example.exampleaddon;
 import com.example.exampleaddon.data.ExampleDataGenerators;
 import com.example.exampleaddon.world.item.ExampleCreativeModeTabs;
 import com.example.exampleaddon.world.item.ExampleItems;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
@@ -35,12 +34,6 @@ public class ExampleAddon {
      * @param modContainer Metadata container for this mod.
      */
     public ExampleAddon(IEventBus modEventBus, ModContainer modContainer) {
-        LOGGER.info(
-                "Initializing {} for {} in a {} environment...",
-                MOD_NAME,
-                TommyLibServices.PLATFORM.getPlatformName(),
-                TommyLibServices.PLATFORM.getEnvironmentName());
-
         // Initialize registries by referencing their classes or calling an init() method.
         // Doing this early ensures DeferredRegisters are loaded and ready before registration events fire.
         ExampleItems.init();

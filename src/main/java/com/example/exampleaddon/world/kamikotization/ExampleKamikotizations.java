@@ -2,9 +2,6 @@ package com.example.exampleaddon.world.kamikotization;
 
 import com.example.exampleaddon.ExampleAddon;
 import com.example.exampleaddon.world.item.ExampleItems;
-import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Either;
-import dev.thomasglasser.mineraculous.api.core.customization.setting.CustomizationSettings;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
 import dev.thomasglasser.mineraculous.api.world.kamikotization.Kamikotization;
 import dev.thomasglasser.mineraculous.api.world.kamikotization.condition.ItemCondition;
@@ -34,18 +31,12 @@ public class ExampleKamikotizations {
     public static void bootstrap(BootstrapContext<Kamikotization> context) {
         context.register(
                 EXAMPLE,
-                new Kamikotization(
-                        // 1. Conditions list: Conditions checked when a Kamikotization attempts to trigger
+                Kamikotization.builder(ExampleItems.EXAMPLE_JEWEL.toStack())
+                        // Conditions checked when a Kamikotization attempts to trigger
                         // Here, we require the target entity to be holding exactly 1 of our Example Jewel.
-                        ImmutableList.of(
-                                new ItemCondition(
-                                        ExampleItems.EXAMPLE_JEWEL.get(),
-                                        predicate -> predicate.withCount(MinMaxBounds.Ints.exactly(1)))),
-                        // 2. Customization settings (empty by default unless adding specific animation/sound tweaks)
-                        CustomizationSettings.EMPTY,
-                        // 3. Power source: The ItemStack tool or Ability that provides the main power
-                        Either.left(ExampleItems.EXAMPLE_JEWEL.toStack()),
-                        // 4. Passive abilities: A list of passive Abilities granted to the Kamikotized entity
-                        ImmutableList.of()));
+                        .condition(new ItemCondition(
+                                ExampleItems.EXAMPLE_JEWEL.get(),
+                                predicate -> predicate.withCount(MinMaxBounds.Ints.exactly(1))))
+                        .build());
     }
 }

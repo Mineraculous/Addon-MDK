@@ -2,7 +2,7 @@ package com.example.exampleaddon.data.advancements.packs;
 
 import com.example.exampleaddon.ExampleAddon;
 import com.example.exampleaddon.world.item.ExampleItems;
-import dev.thomasglasser.tommylib.api.data.advancements.ExtendedAdvancementGenerator;
+import dev.thomasglasser.mineraculous.api.data.advancements.MineraculousAdvancementGenerator;
 import java.util.function.BiConsumer;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
@@ -10,7 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 
 /// Defines the actual advancement tree and triggers for this addon.
-public class ExampleAdvancements extends ExtendedAdvancementGenerator {
+public class ExampleAdvancements extends MineraculousAdvancementGenerator {
     public ExampleAdvancements(BiConsumer<String, String> lang) {
         super(ExampleAddon.MOD_ID, "main", lang);
     }

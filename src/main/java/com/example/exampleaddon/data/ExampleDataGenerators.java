@@ -8,8 +8,8 @@ import com.example.exampleaddon.data.models.ExampleItemModelProvider;
 import com.example.exampleaddon.world.kamikotization.ExampleKamikotizations;
 import com.example.exampleaddon.world.miraculous.ExampleMiraculouses;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
+import dev.thomasglasser.mineraculous.api.data.MineraculousDataGenerationUtils;
 import dev.thomasglasser.mineraculous.api.world.ability.Abilities;
-import dev.thomasglasser.tommylib.api.data.DataGenerationUtils;
 import net.minecraft.core.RegistrySetBuilder;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -39,13 +39,13 @@ public class ExampleDataGenerators {
         event.createDatapackRegistryObjects(BUILDER);
 
         // 2. Generate a helpful registry dump report for debugging
-        DataGenerationUtils.createRegistryDumpReport(event, ExampleAddon.MOD_ID);
+        MineraculousDataGenerationUtils.createRegistryDumpReport(event, ExampleAddon.MOD_ID);
 
         // 3. Register common providers (language and dependent providers like advancements)
-        DataGenerationUtils.createLangDependent(event, ExampleEnUsLanguageProvider::new, ExampleAdvancementProvider::new);
+        MineraculousDataGenerationUtils.createLangDependent(event, ExampleEnUsLanguageProvider::new, ExampleAdvancementProvider::new);
 
         // 4. Register client-side asset providers (e.g., item models and looks)
-        DataGenerationUtils.createProvider(event, ExampleItemModelProvider::new);
+        MineraculousDataGenerationUtils.createProvider(event, ExampleItemModelProvider::new);
         event.createProvider(ExampleLookProvider::new);
     }
 }

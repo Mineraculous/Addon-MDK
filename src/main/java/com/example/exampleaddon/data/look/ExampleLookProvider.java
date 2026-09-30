@@ -4,6 +4,7 @@ import com.example.exampleaddon.ExampleAddon;
 import com.example.exampleaddon.world.item.ExampleItems;
 import com.example.exampleaddon.world.kamikotization.ExampleKamikotizations;
 import com.example.exampleaddon.world.miraculous.ExampleMiraculouses;
+import dev.thomasglasser.mineraculous.api.core.look.LookUtils;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
 import dev.thomasglasser.mineraculous.impl.data.looks.MineraculousLookProvider;
 import java.util.concurrent.CompletableFuture;
@@ -25,9 +26,9 @@ public class ExampleLookProvider extends MineraculousLookProvider {
     protected void registerLooks(HolderLookup.Provider provider) {
         // Register visual look for the Miraculous (automatically maps suit textures, 3D armor models,
         // hidden/powered item states, tool animations, and the Kwami entity's model/textures/animations).
-        miraculousNoAnims(provider.lookupOrThrow(MineraculousRegistries.MIRACULOUS).getOrThrow(ExampleMiraculouses.EXAMPLE), ExampleItems.EXAMPLE_JEWEL.getKey());
+        miraculousNoAnims(provider.lookupOrThrow(MineraculousRegistries.MIRACULOUS).getOrThrow(ExampleMiraculouses.EXAMPLE), ExampleItems.EXAMPLE_JEWEL.getKey(), LookUtils.DEFAULT_NAME);
 
         // Register visual look for the Kamikotization (maps superpowered armor models and suit textures).
-        kamikotizationLookNoAnims(ExampleKamikotizations.EXAMPLE);
+        kamikotizationLookNoAnims(ExampleKamikotizations.EXAMPLE, LookUtils.DEFAULT_NAME);
     }
 }

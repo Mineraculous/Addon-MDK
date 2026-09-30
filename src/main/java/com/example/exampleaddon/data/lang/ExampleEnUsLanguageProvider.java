@@ -5,8 +5,8 @@ import com.example.exampleaddon.world.item.ExampleCreativeModeTabs;
 import com.example.exampleaddon.world.item.ExampleItems;
 import com.example.exampleaddon.world.kamikotization.ExampleKamikotizations;
 import com.example.exampleaddon.world.miraculous.ExampleMiraculouses;
+import dev.thomasglasser.mineraculous.api.data.lang.MineraculousEnUsLanguageProvider;
 import dev.thomasglasser.mineraculous.api.world.kamikotization.condition.ItemCondition;
-import dev.thomasglasser.mineraculous.impl.data.lang.MineraculousEnUsLanguageProvider;
 import net.minecraft.data.PackOutput;
 
 /**

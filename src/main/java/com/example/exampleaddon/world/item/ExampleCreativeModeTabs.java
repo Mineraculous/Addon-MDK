@@ -2,9 +2,8 @@ package com.example.exampleaddon.world.item;
 
 import com.example.exampleaddon.ExampleAddon;
 import dev.thomasglasser.mineraculous.impl.world.item.MineraculousCreativeModeTabs;
-import dev.thomasglasser.tommylib.api.platform.TommyLibServices;
-import dev.thomasglasser.tommylib.api.registration.DeferredHolder;
-import dev.thomasglasser.tommylib.api.registration.DeferredRegister;
+import dev.thomasglasser.tommylib.api.registration.ExtendedHolder;
+import dev.thomasglasser.tommylib.api.registration.Registrar;
 import java.util.Set;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,20 +15,19 @@ import net.minecraft.world.item.ItemStackLinkedSet;
 
 /// Holds all registered {@link CreativeModeTab}s for this addon.
 public class ExampleCreativeModeTabs {
-    /// DeferredRegister for creative mode tabs under our mod namespace.
-    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ExampleAddon.MOD_ID);
+    /// Registrar for creative mode tabs under our mod namespace.
+    private static final Registrar<CreativeModeTab> TABS = Registrar.create(Registries.CREATIVE_MODE_TAB, ExampleAddon.MOD_ID);
 
     /**
      * Our addon's custom creative mode tab.
      *
-     * <p>We use {@link TommyLibServices#CLIENT}'s tabBuilder() to construct a cross-loader tab.
+     * <p>We use {@link CreativeModeTab#builder()} to construct the tab.
      * Notice how we set type SEARCH and automatically collect all items from our addon namespace,
      * and position our tab right after Mineraculous's main tab using {@code withTabsBefore}.
      */
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = TABS.register(
+    public static final ExtendedHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = TABS.register(
             ExampleAddon.MOD_ID,
-            () -> TommyLibServices.CLIENT
-                    .tabBuilder()
+            () -> CreativeModeTab.builder()
                     .title(Component.translatable(
                             ExampleAddon.modLoc(ExampleAddon.MOD_ID).toLanguageKey("item_group")))
                     .icon(ExampleItems.EXAMPLE_JEWEL::toStack)

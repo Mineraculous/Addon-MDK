@@ -2,17 +2,17 @@ package com.example.exampleaddon.data.models;
 
 import com.example.exampleaddon.ExampleAddon;
 import com.example.exampleaddon.world.item.ExampleItems;
-import dev.thomasglasser.tommylib.api.data.models.ExtendedItemModelProvider;
+import dev.thomasglasser.mineraculous.api.data.models.MineraculousItemModelProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 /**
  * Generates item model JSON files (in {@code src/generated/resources/models/item/}) for this addon.
  *
- * <p>Extending TommyLib's {@link ExtendedItemModelProvider} gives us convenient helper methods
+ * <p>Extending {@link MineraculousItemModelProvider} gives us convenient helper methods
  * like {@link #basicItem} and advanced perspective model builders.
  */
-public class ExampleItemModelProvider extends ExtendedItemModelProvider {
+public class ExampleItemModelProvider extends MineraculousItemModelProvider {
     public ExampleItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, ExampleAddon.MOD_ID, existingFileHelper);
     }

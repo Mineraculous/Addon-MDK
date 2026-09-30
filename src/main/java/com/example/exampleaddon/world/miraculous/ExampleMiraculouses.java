@@ -2,7 +2,6 @@ package com.example.exampleaddon.world.miraculous;
 
 import com.example.exampleaddon.ExampleAddon;
 import com.example.exampleaddon.world.item.ExampleItems;
-import com.google.common.collect.ImmutableList;
 import dev.thomasglasser.mineraculous.api.core.customization.setting.CustomizationSettingKeys;
 import dev.thomasglasser.mineraculous.api.core.customization.setting.CustomizationSettings;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
@@ -12,7 +11,6 @@ import dev.thomasglasser.mineraculous.api.world.ability.Ability;
 import dev.thomasglasser.mineraculous.api.world.ability.AbilityInstance;
 import dev.thomasglasser.mineraculous.api.world.miraculous.Miraculous;
 import dev.thomasglasser.mineraculous.impl.data.curios.MineraculousCuriosProvider;
-import java.util.Optional;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.TextColor;
@@ -43,25 +41,23 @@ public class ExampleMiraculouses {
 
         context.register(
                 EXAMPLE,
-                new Miraculous(
+                Miraculous.builder(
                         // 1. TextColor: Theme color used for chat formatting, UI, and visual effects
                         TextColor.fromRgb(0x00ffcc),
                         // 2. Curios slot: Which Curio accessory slot this Miraculous occupies (e.g., brooch, ring, necklace)
                         MineraculousCuriosProvider.SLOT_BROOCH,
                         // 3. Tool/Weapon ItemStack: The item granted to the player when transformed
                         ExampleItems.EXAMPLE_JEWEL.toStack(),
-                        // 4. Optional secondary slot (e.g., belt holster for weapons when not held)
-                        Optional.empty(),
+                        // 4. Active Superpower Ability: The main ability triggered by the hero (e.g., Kamikotization, Cataclysm)
+                        AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKOTIZATION)))
                         // 5. CustomizationSettings: Configures transformation animation duration and sound events
-                        CustomizationSettings.builder()
+                        .customizationSettings(CustomizationSettings.builder()
                                 .add(CustomizationSettingKeys.TRANSFORMATION_FRAMES, 7)
                                 .add(CustomizationSettingKeys.TRANSFORM_SOUND, MineraculousSoundEvents.BUTTERFLY_TRANSFORM)
-                                .build(),
-                        // 6. Active Superpower Ability: The main ability triggered by the hero (e.g., Kamikotization, Cataclysm)
-                        AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKOTIZATION)),
-                        // 7. Passive Abilities: Constant buffs or powers active while transformed
-                        ImmutableList.of(
-                                AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKO_CONTROL)),
-                                AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKOTIZED_COMMUNICATION)))));
+                                .build())
+                        // 6. Passive Abilities: Constant buffs or powers active while transformed
+                        .passiveAbility(AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKO_CONTROL)))
+                        .passiveAbility(AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKOTIZED_COMMUNICATION)))
+                        .build());
     }
 }
