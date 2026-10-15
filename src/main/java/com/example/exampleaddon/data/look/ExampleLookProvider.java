@@ -6,7 +6,7 @@ import com.example.exampleaddon.world.kamikotization.ExampleKamikotizations;
 import com.example.exampleaddon.world.miraculous.ExampleMiraculouses;
 import dev.thomasglasser.mineraculous.api.core.look.LookUtils;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
-import dev.thomasglasser.mineraculous.impl.data.looks.MineraculousLookProvider;
+import dev.thomasglasser.mineraculous.api.data.look.MineraculousLookProvider;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

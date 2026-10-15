@@ -1,12 +1,12 @@
 {
   "contexts": {
-    "mineraculous:hidden_miraculous": {
+    "mineraculous:camouflaged_miraculous": {
       "mineraculous:countdown_textures": {
         "base": "exampleaddon:textures/item/miraculous/example/powered.png"
       },
       "mineraculous:geckolib_model": "exampleaddon:geo/item/miraculous/example.geo.json",
       "mineraculous:item_transforms": "exampleaddon:models/item/miraculous/example.json",
-      "mineraculous:texture": "exampleaddon:textures/item/miraculous/example/hidden.png"
+      "mineraculous:texture": "exampleaddon:textures/item/miraculous/example/camouflaged.png"
     },
     "mineraculous:miraculous_suit": {
       "mineraculous:geckolib_model": "exampleaddon:geo/item/armor/miraculous/example.geo.json",

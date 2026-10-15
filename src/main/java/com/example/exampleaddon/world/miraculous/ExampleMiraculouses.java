@@ -5,15 +5,15 @@ import com.example.exampleaddon.world.item.ExampleItems;
 import dev.thomasglasser.mineraculous.api.core.customization.setting.CustomizationSettingKeys;
 import dev.thomasglasser.mineraculous.api.core.customization.setting.CustomizationSettings;
 import dev.thomasglasser.mineraculous.api.core.registries.MineraculousRegistries;
+import dev.thomasglasser.mineraculous.api.data.curios.MineraculousCuriosProvider;
 import dev.thomasglasser.mineraculous.api.sounds.MineraculousSoundEvents;
+import dev.thomasglasser.mineraculous.api.util.ColorPalette;
 import dev.thomasglasser.mineraculous.api.world.ability.Abilities;
 import dev.thomasglasser.mineraculous.api.world.ability.Ability;
 import dev.thomasglasser.mineraculous.api.world.ability.AbilityInstance;
 import dev.thomasglasser.mineraculous.api.world.miraculous.Miraculous;
-import dev.thomasglasser.mineraculous.impl.data.curios.MineraculousCuriosProvider;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 
 /**
@@ -42,8 +42,8 @@ public class ExampleMiraculouses {
         context.register(
                 EXAMPLE,
                 Miraculous.builder(
-                        // 1. TextColor: Theme color used for chat formatting, UI, and visual effects
-                        TextColor.fromRgb(0x00ffcc),
+                        // 1. ColorPalette: Theme colors used for UI/names (primary), essence/effects (secondary), and flash visuals (tertiary)
+                        ColorPalette.of(0x00ffcc, 0x00b38f, 0x33ffd6),
                         // 2. Curios slot: Which Curio accessory slot this Miraculous occupies (e.g., brooch, ring, necklace)
                         MineraculousCuriosProvider.SLOT_BROOCH,
                         // 3. Tool/Weapon ItemStack: The item granted to the player when transformed
