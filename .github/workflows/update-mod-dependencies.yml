@@ -1,0 +1,11 @@
+name: update-mod-dependencies
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # weekly
+  workflow_dispatch:
+
+jobs:
+  update-mod-dependencies:
+    uses: Mineraculous/.github/.github/workflows/update-mod-dependencies.yml@main
+    secrets: inherit

@@ -2,18 +2,29 @@ plugins {
 	id 'java-library'
 	id 'maven-publish'
 	id 'signing'
-	id 'dev.lukebemish.immaculate' version '0.2.5'
+	id 'dev.lukebemish.immaculate' version "${immaculate_version}"
 	id 'idea'
 	id 'net.neoforged.moddev' version "${mdg_version}"
 }
 
+// ==============================================================================
+// Mineraculous Common Build Conventions
+// ==============================================================================
+// Applies the centralized build logic shared across the Mineraculous ecosystem.
+// This automatically configures:
+//   - Gradle wrapper and standard Java toolchain (pinned to Microsoft OpenJDK)
+//   - Common Maven repositories (Modrinth, NeoForge, BlameJared, Cloudsmith, etc.)
+//   - NeoForge ModDevGradle setup (client, server, data run configurations)
+//   - Automated neoforge.mods.toml metadata expansion and version range generation
+//   - Immaculate/Spotless code formatting rules
+//   - Standard Maven publishing and signing tasks
 apply from: 'https://raw.githubusercontent.com/Mineraculous/.github/main/gradle/common.gradle'
 
 // ==============================================================================
 // Dependencies
 // ==============================================================================
 dependencies {
-	// TommyLib is required by Mineraculous. Using jarJar bundles it if needed.
+	// TommyLib is required by Mineraculous. Using jarJar bundles so players don't have to download it.
 	jarJar implementation("dev.thomasglasser.tommylib:tommylib-neoforge-${minecraft_version}:${tommylib_version}")
 
 	// Mineraculous API: provides core registries, capabilities, and base classes for addons.
@@ -29,12 +40,13 @@ dependencies {
 	// Uncomment below if you need advanced entity/AI behaviors via SmartBrainLib:
 	// implementation "net.tslat.smartbrainlib:smartbrainlib-neoforge-${minecraft_version}:${smartbrainlib_version}"
 
-	// Uncomment below if you want to create in-game guide books via Modonomicon:
+	// Uncomment below if you create in-game documentation via Modonomicon:
 	// implementation "com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"
 
-	// --- Development QoL Mods ---
+	// --- Runtime Quality-of-Life Dependencies ---
 	implementation "maven.modrinth:jade:${jade_version}+neoforge"
 	localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 }
 
+// Automatically processes and expands token placeholders in neoforge.mods.toml
 registerModMetadata()
