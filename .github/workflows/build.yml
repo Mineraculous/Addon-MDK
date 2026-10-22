@@ -1,0 +1,19 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: "Name of the artifact to upload"
+        required: false
+        type: string
+        default: "Addon-MDK"
+
+jobs:
+  build:
+    uses: Mineraculous/.github/.github/workflows/build.yml@main
+    secrets: inherit
+    with:
+      artifact-name: ${{ inputs.artifact-name || 'Addon-MDK' }}
