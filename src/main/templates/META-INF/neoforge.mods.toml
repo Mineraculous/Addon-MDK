@@ -47,7 +47,7 @@ loaders = ['neoforge']
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[${neoforge_version},)"
+versionRange="${neoforge_version_range}"
 ordering="NONE"
 side="BOTH"
 
@@ -55,7 +55,7 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="minecraft"
 type="required"
-versionRange="[${minecraft_version},${next_minecraft_version})"
+versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
 
