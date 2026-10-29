@@ -2,8 +2,7 @@
   "acceptable_slot": "brooch",
   "active_ability": "mineraculous:kamikotization",
   "customization_settings": {
-    "mineraculous:transform_sound": "mineraculous:butterfly_transform",
-    "mineraculous:transformation_frames": 7
+    "mineraculous:transform_sound": "mineraculous:butterfly_transform"
   },
   "palette": {
     "primary": "#00FFCC",

@@ -50,9 +50,8 @@ public class ExampleMiraculouses {
                         ExampleItems.EXAMPLE_JEWEL.toStack(),
                         // 4. Active Superpower Ability: The main ability triggered by the hero (e.g., Kamikotization, Cataclysm)
                         AbilityInstance.of(abilities.getOrThrow(Abilities.KAMIKOTIZATION)))
-                        // 5. CustomizationSettings: Configures transformation animation duration and sound events
+                        // 5. CustomizationSettings: Configures general settings like sound events
                         .customizationSettings(CustomizationSettings.builder()
-                                .add(CustomizationSettingKeys.TRANSFORMATION_FRAMES, 7)
                                 .add(CustomizationSettingKeys.TRANSFORM_SOUND, MineraculousSoundEvents.BUTTERFLY_TRANSFORM)
                                 .build())
                         // 6. Passive Abilities: Constant buffs or powers active while transformed

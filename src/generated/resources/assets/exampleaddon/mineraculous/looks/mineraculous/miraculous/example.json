@@ -10,11 +10,7 @@
     },
     "mineraculous:miraculous_suit": {
       "mineraculous:geckolib_model": "exampleaddon:geo/item/armor/miraculous/example.geo.json",
-      "mineraculous:texture": "exampleaddon:textures/entity/equipment/humanoid/miraculous/example.png",
-      "mineraculous:transformation_textures": {
-        "base": "exampleaddon:textures/entity/equipment/humanoid/miraculous/example.png",
-        "texture_count": 7
-      }
+      "mineraculous:texture": "exampleaddon:textures/entity/equipment/humanoid/miraculous/example.png"
     },
     "mineraculous:miraculous_tool": {
       "mineraculous:flat_texture": "exampleaddon:textures/item/example_jewel.png",
